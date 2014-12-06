@@ -1,7 +1,7 @@
 Package: DMRcatedata
 Type: Package
 Title: Data Package for DMRcate package
-Version: 1.3.0
+Version: 1.3.1
 Date: 2013-20-12
 Author: Tim Peters
 Maintainer: Tim Peters <Tim.Peters@csiro.au>
@@ -9,5 +9,5 @@ Description: This package contains 3 data objects supporting
         functionality and examples of DMRcate
 License: GPL-3
 Depends: R (>= 3.0.2)
-biocViews: IlluminaChip
+biocViews: SNPData
 VignetteBuilder: knitr
