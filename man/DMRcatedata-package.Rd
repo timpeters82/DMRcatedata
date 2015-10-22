@@ -9,9 +9,9 @@ Dataset to use with the DMRcate Pipeline
 SNP annotation, cross-hybridising probes and sample 450k data
 }
 \author{
-Tim Peters, CSIRO Computational Informatics 
+Tim Peters, Epigenetics Program, Garvan Institute of Medical Research
 
-Maintainer: Tim Peters<Tim.Peters@csiro.au>
+Maintainer: Tim Peters<t.peters@garvan.org.au>
 }
 
 \examples{
