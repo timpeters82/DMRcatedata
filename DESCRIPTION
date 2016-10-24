@@ -1,15 +1,14 @@
 Package: DMRcatedata
 Type: Package
 Title: Data Package for DMRcate package
-Version: 1.11.0
-Date: 2015-22-10
+Version: 1.11.1
+Date: 2016-24-10
 Author: Tim Peters
 Maintainer: Tim Peters <t.peters@garvan.org.au>
-Description: This package contains 7 data objects supporting functionality and examples of the Bioconductor package DMRcate.
+Description: This package contains 8 data objects supporting functionality and examples of the Bioconductor package DMRcate.
 License: GPL-3
 Depends: R (>= 3.2.2), GenomicRanges
 Suggests: knitr
 biocViews: ExperimentData, SNPData
 VignetteBuilder: knitr
-NeedsCompilation: no
-Packaged: 2015-10-22 01:41:29 UTC; timpet
+

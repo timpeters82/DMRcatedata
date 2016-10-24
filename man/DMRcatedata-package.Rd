@@ -6,7 +6,7 @@
 Dataset to use with the DMRcate Pipeline 
 }
 \description{
-SNP annotation, cross-hybridising probes and sample 450k data
+SNP annotation, cross-hybridising probes, XY probes, sample 450k and WGBS data
 }
 \author{
 Tim Peters, Epigenetics Program, Garvan Institute of Medical Research
