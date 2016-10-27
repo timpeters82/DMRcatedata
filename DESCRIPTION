@@ -1,8 +1,8 @@
 Package: DMRcatedata
 Type: Package
 Title: Data Package for DMRcate package
-Version: 1.11.1
-Date: 2016-24-10
+Version: 1.10.1
+Date: 2016-27-10
 Author: Tim Peters
 Maintainer: Tim Peters <t.peters@garvan.org.au>
 Description: This package contains 8 data objects supporting functionality and examples of the Bioconductor package DMRcate.
