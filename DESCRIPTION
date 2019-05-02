@@ -1,7 +1,7 @@
 Package: DMRcatedata
 Type: Package
 Title: Data Package for DMRcate package
-Version: 1.20.0
+Version: 1.21.0
 Date: 2016-27-10
 Author: Tim Peters
 Maintainer: Tim Peters <t.peters@garvan.org.au>
