@@ -1,0 +1,14 @@
+Package: DMRcatedata
+Type: Package
+Title: Data Package for DMRcate
+Version: 2.0.0
+Date: 2019-10-09
+Author: Tim Peters
+Maintainer: Tim Peters <t.peters@garvan.org.au>
+Description: This package contains 9 data objects supporting functionality and examples of the Bioconductor package DMRcate.
+License: GPL-3
+Depends: R (>= 3.6), ExperimentHub, GenomicFeatures, Gviz, readxl, plyr, rtracklayer, IlluminaHumanMethylation450kanno.ilmn12.hg19, IlluminaHumanMethylationEPICanno.ilm10b4.hg19
+LazyData: true
+Suggests: knitr
+biocViews: ExperimentData, SNPData, Homo_sapiens_Data, Mus_musculus_Data, SequencingData, MicroarrayData
+VignetteBuilder: knitr

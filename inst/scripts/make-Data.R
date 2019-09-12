@@ -1,0 +1,162 @@
+#Make 450K filtering data
+#crosshyb
+require(readxl)
+require(plyr)
+require(GenomicFeatures)
+require(Gviz)
+require(rtracklayer)
+require(IlluminaHumanMethylation450kanno.ilmn12.hg19)
+require(IlluminaHumanMethylationEPICanno.ilm10b4.hg19)
+
+tmp <- tempfile(fileext = ".xlsx")
+download.file(url = "http://www.sickkids.ca/MS-Office-Files/Research/Weksberg%20Lab/48639-non-specific-probes-Illumina450k.xlsx", destfile = tmp)
+ch_450k <- c(read_xlsx(tmp, sheet = 1)$TargetID, read_xlsx(tmp, sheet=2)$TargetID, read_xlsx(tmp, sheet=3)$TargetID)
+tab2 <- read.csv("https://static-content.springer.com/esm/art%3A10.1186%2Fs13059-016-1066-1/MediaObjects/13059_2016_1066_MOESM2_ESM.csv", stringsAsFactors = FALSE)
+tab3 <- read.csv("https://static-content.springer.com/esm/art%3A10.1186%2Fs13059-016-1066-1/MediaObjects/13059_2016_1066_MOESM3_ESM.csv", stringsAsFactors = FALSE)
+ch_EPIC <- unique(c(tab2$PROBE, tab3$PROBE))
+crosshyb <- sort(unique(c(ch_450k, ch_EPIC)))
+file.remove(tmp)
+
+#snpsall
+#EPIC
+tab4 <- read.csv("https://static-content.springer.com/esm/art%3A10.1186%2Fs13059-016-1066-1/MediaObjects/13059_2016_1066_MOESM4_ESM.csv", stringsAsFactors = FALSE)
+tab5 <- read.csv("https://static-content.springer.com/esm/art%3A10.1186%2Fs13059-016-1066-1/MediaObjects/13059_2016_1066_MOESM5_ESM.csv", stringsAsFactors = FALSE)
+tab6 <- read.csv("https://static-content.springer.com/esm/art%3A10.1186%2Fs13059-016-1066-1/MediaObjects/13059_2016_1066_MOESM6_ESM.csv", stringsAsFactors = FALSE)
+
+allprobes <- unique(c(tab4$PROBE, tab5$PROBE, tab6$PROBE))
+
+getallprobeinf <- function(probe){
+  df0 <- data.frame(snps=character(0), distances=integer(0), mafs=numeric(0))
+  df <- df0
+  if(probe %in% tab4$PROBE){
+    t4entries <- tab4[tab4$PROBE==probe,]
+    df4 <- df0
+    for (i in 1:nrow(t4entries)){
+      these.snps <- unlist(strsplit(t4entries$VARIANT_ID[i], ";"))
+      these.distances <- rep(0, length(these.snps))
+      these.mafs <- unlist(strsplit(t4entries$AF[i], ";"))
+      df4 <- rbind(df4, data.frame(snps=as.character(these.snps), 
+                                   distances=as.numeric(these.distances), 
+                                   mafs=as.numeric(these.mafs)))
+    }
+  df <- rbind(df, df4)
+  } 
+  if(probe %in% tab5$PROBE){
+    t5entries <- tab5[tab5$PROBE==probe,]
+    df5 <- df0
+    for (i in 1:nrow(t5entries)){
+      these.snps <- unlist(strsplit(t5entries$VARIANT_ID[i], ";"))
+      these.distances <- rep(-1, length(these.snps))
+      these.mafs <- unlist(strsplit(t5entries$AF[i], ";"))
+      df5 <- rbind(df5, data.frame(snps=as.character(these.snps), 
+                                   distances=as.numeric(these.distances), 
+                                   mafs=as.numeric(these.mafs)))
+    }
+    df <- rbind(df, df5)
+  }
+  if(probe %in% tab6$PROBE){
+    t6entries <- tab6[tab6$PROBE==probe,]
+    df6 <- df0
+    for (i in 1:nrow(t6entries)){
+      these.snps <- unlist(strsplit(t6entries$VARIANT_ID[i], ";"))
+      probecoord <- IRanges(t6entries$MAPINFO[i], t6entries$MAPINFO[i])
+      varcoord <- IRanges(t6entries$VARIANT_START[i], t6entries$VARIANT_END[i])
+      these.distances <- rep(distance(probecoord, varcoord), length(these.snps))
+      these.mafs <- unlist(strsplit(t6entries$AF[i], ";"))
+      df6 <- rbind(df6, data.frame(snps=as.character(these.snps), 
+                                   distances=as.numeric(these.distances), 
+                                   mafs=as.numeric(these.mafs)))
+    }
+    df <- rbind(df, df6)
+  }
+  cbind(probe=rep(probe, nrow(df)), df)
+}
+probeinf <- lapply(allprobes, getallprobeinf)
+epicsnps <- rbind.fill(probeinf)
+
+#450K
+tmp1 <- tempfile(fileext = ".xlsx")
+download.file(url = "http://www.sickkids.ca/MS-Office-Files/Research/Weksberg%20Lab/48640-polymorphic-CpGs-Illumina450k.xlsx", destfile = tmp1)
+polyandsbe <- suppressWarnings(read_xlsx(tmp1, sheet = 1))
+polyandsbe <- polyandsbe[!polyandsbe$PROBE %in% epicsnps$probe,]
+withinprobe <- suppressWarnings(read_xlsx(tmp1, sheet = 2))
+withinprobe <- withinprobe[!withinprobe$PROBE %in% epicsnps$probe,]
+
+overcpg <- polyandsbe[grep("MAPINFO", polyandsbe$BASE_FROM_MAPINFO),]
+overcpg <- data.frame(probe=overcpg$PROBE, snps=overcpg$SNP_ID, 
+                      distances=0, mafs=overcpg$AF)
+sbe <- polyandsbe[grep("SBE", polyandsbe$BASE_FROM_MAPINFO),]
+sbe <- data.frame(probe=sbe$PROBE, snps=sbe$SNP_ID, distances=-1, mafs=sbe$AF)
+
+withinprobe <- data.frame(probe=withinprobe$PROBE, snps=withinprobe$SNP_ID,
+                          distances=distance(IRanges(withinprobe$MAPINFO, withinprobe$MAPINFO),
+                                             IRanges(withinprobe$SNP_POS, withinprobe$SNP_POS)),
+                          mafs=withinprobe$AF)
+
+snpsall <- rbind(epicsnps, overcpg, sbe, withinprobe)
+
+#XY.probes
+
+locs450k <- IlluminaHumanMethylation450kanno.ilmn12.hg19::Locations
+locsEPIC <- IlluminaHumanMethylationEPICanno.ilm10b4.hg19::Locations
+XY.probes <- union(rownames(locs450k[locs450k$chr %in% c("chrX", "chrY"),]),
+                  rownames(locsEPIC[locsEPIC$chr %in% c("chrX", "chrY"),]))
+
+
+#Make tracks for hg19, hg38, mm10
+
+#hg38
+
+hg38 <- makeTxDbFromEnsembl(organism="Homo sapiens", release=96)
+hg38 <- keepSeqlevels(hg38, as.character(c(1:22, "X", "Y", "MT")))
+newStyle <- mapSeqlevels(seqlevels(hg38),"UCSC")
+hg38 <- renameSeqlevels(hg38, newStyle)
+hg38.grt <- GeneRegionTrack(hg38, genome="hg38", shape="box", fill = "lightblue", 
+                            name = "Gene", showId = TRUE, geneSymbol = TRUE, 
+                            transcriptAnnotation = "symbol", just.group="above")
+gtf <- as.data.frame(rtracklayer::import("ftp://ftp.ensembl.org/pub/release-96/gtf/homo_sapiens/Homo_sapiens.GRCh38.96.chr.gtf.gz"))
+m <- match(transcript(hg38.grt), gtf$transcript_id)
+symbol(hg38.grt) <- gtf$gene_name[m]
+hg38.generanges <- sapply(unique(symbol(hg38.grt)), function (x) {these.ranges <- ranges(hg38.grt)[ranges(hg38.grt)$symbol==x]
+                                                                  GRanges(seqnames(these.ranges)[1], IRanges(min(start(these.ranges)),
+                                                                                                             max(end(these.ranges))),
+                                                                          strand=strand(these.ranges)[1], symbol=x)})
+hg38.generanges <- unlist(GRangesList(hg38.generanges))
+
+#hg19
+hg19 <- makeTxDbFromEnsembl(organism="Homo sapiens", release=75)
+hg19 <- keepSeqlevels(hg19, as.character(c(1:22, "X", "Y", "MT")))
+newStyle <- mapSeqlevels(seqlevels(hg19),"UCSC")
+hg19 <- renameSeqlevels(hg19, newStyle)
+hg19.grt <- GeneRegionTrack(hg19, genome="hg19", shape="box", fill = "lightblue", 
+                            name = "Gene", showId = TRUE, geneSymbol = TRUE, 
+                            transcriptAnnotation = "symbol", just.group="above")
+gtf <- as.data.frame(rtracklayer::import("ftp://ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/Homo_sapiens.GRCh37.75.gtf.gz"))
+m <- match(transcript(hg19.grt), gtf$transcript_id)
+symbol(hg19.grt) <- gtf$gene_name[m]
+hg19.generanges <- sapply(unique(symbol(hg19.grt)), function (x) {these.ranges <- ranges(hg19.grt)[ranges(hg19.grt)$symbol==x]
+                                                                  GRanges(seqnames(these.ranges)[1], IRanges(min(start(these.ranges)),
+                                                                                                             max(end(these.ranges))),
+                                                                          strand=strand(these.ranges)[1], symbol=x)})
+hg19.generanges <- unlist(GRangesList(hg19.generanges))
+
+
+#mm10
+mm10 <- makeTxDbFromEnsembl(organism="Mus musculus", release=96)
+mm10 <- keepSeqlevels(mm10, as.character(c(1:19, "X", "Y", "MT")))
+newStyle <- mapSeqlevels(seqlevels(mm10),"UCSC")
+mm10 <- renameSeqlevels(mm10, newStyle)
+mm10.grt <- GeneRegionTrack(mm10, genome="mm10", shape="box", fill = "lightblue", 
+                            name = "Gene", showId = TRUE, geneSymbol = TRUE, 
+                            transcriptAnnotation = "symbol", just.group="above")
+gtf <- as.data.frame(rtracklayer::import("ftp://ftp.ensembl.org/pub/release-96/gtf/mus_musculus/Mus_musculus.GRCm38.96.chr.gtf.gz"))
+m <- match(transcript(mm10.grt), gtf$transcript_id)
+symbol(mm10.grt) <- gtf$gene_name[m]
+mm10.generanges <- sapply(unique(symbol(mm10.grt)), function (x) {these.ranges <- ranges(mm10.grt)[ranges(mm10.grt)$symbol==x]
+                                                                  GRanges(seqnames(these.ranges)[1], IRanges(min(start(these.ranges)),
+                                                                                                             max(end(these.ranges))),
+                                                                          strand=strand(these.ranges)[1], symbol=x)})
+mm10.generanges <- unlist(GRangesList(mm10.generanges))
+
+save(crosshyb, snpsall, XY.probes, hg19.generanges, hg19.grt, hg38.generanges, hg38.grt, mm10.generanges, mm10.grt,
+     file="dmrcatedata.Rda")

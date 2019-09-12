@@ -1,0 +1,55 @@
+### =========================================================================
+### DMRcatedata metadata 
+### -------------------------------------------------------------------------
+###
+
+meta <- data.frame(
+  Title = c("crosshyb", "snpsall", "XY.probes", "hg19.generanges", "hg19.grt",
+            "hg38.generanges", "hg38.grt", "mm10.generanges", "mm10.grt"),
+  Description = c(paste0("Character vector of Illumina probes whose ", 
+                         "probe sequence promiscuously aligns to non-target ",
+                          "sections of the genome matching 47bp or higher."), 
+                  paste0("Data.frame of Illumina probes whose target ",
+                         "CpG lies on or near a known SNP. SNP ID, distance to ",
+                         "CpG and minor allele frequency are all reported here."), 
+                  paste0("Character vector of Illumina probes whose target CpG ",
+                         "site is on a sex chromosome."),
+                  paste0("GRanges object giving the genomic intervals of all gene ",
+                         "regions in the Ensembl Release 75 of hg19."), 
+                  "GeneRegionTrack formulated from TxDb.Hsapiens.UCSC.hg19.knownGene.",
+                  paste0("GRanges object giving the genomic intervals of all gene ",
+                         "regions in the Ensembl Release 96 of hg38."),
+                  "GeneRegionTrack formulated from TxDb.Hsapiens.UCSC.hg38.knownGene.",
+                  paste0("GRanges object giving the genomic intervals of all gene ",
+                         "regions in the Ensembl Release 96 of mm10."),
+                  "GeneRegionTrack formulated from TxDb.Mmusculus.UCSC.mm10.knownGene."),
+  BiocVersion = c(rep("2.14", 3), rep("3.9", 6)),
+  Genome = c(rep("hg19", 5), rep("hg38", 2), rep("mm10", 2)),
+  SourceType = c(rep("CSV", 3), rep("GTF", 6)), 
+  SourceUrl = c(paste0("http://www.sickkids.ca/MS-Office-Files/Research/Weksberg%20Lab/48639-non-specific-probes-Illumina450k.xlsx, ",
+                       "https://static-content.springer.com/esm/art%3A10.1186%2Fs13059-016-1066-1/MediaObjects/13059_2016_1066_MOESM2_ESM.csv, ",
+                       "https://static-content.springer.com/esm/art%3A10.1186%2Fs13059-016-1066-1/MediaObjects/13059_2016_1066_MOESM3_ESM.csv"),
+                paste0("https://static-content.springer.com/esm/art%3A10.1186%2Fs13059-016-1066-1/MediaObjects/13059_2016_1066_MOESM4_ESM.csv, ",
+                       "https://static-content.springer.com/esm/art%3A10.1186%2Fs13059-016-1066-1/MediaObjects/13059_2016_1066_MOESM5_ESM.csv, ",
+                       "https://static-content.springer.com/esm/art%3A10.1186%2Fs13059-016-1066-1/MediaObjects/13059_2016_1066_MOESM6_ESM.csv, ",
+                       "http://www.sickkids.ca/MS-Office-Files/Research/Weksberg%20Lab/48640-polymorphic-CpGs-Illumina450k.xlsx"),
+                paste0("https://bitbucket.org/hansenlab/illuminahumanmethylationepicanno.ilm10b4.hg19/src/master/, ", 
+                       "https://bitbucket.org/hansenlab/illuminahumanmethylation450kanno.ilmn12.hg19/src/master/"),
+                rep("ftp://ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/Homo_sapiens.GRCh37.75.gtf.gz", 2),
+                rep("ftp://ftp.ensembl.org/pub/release-96/gtf/homo_sapiens/Homo_sapiens.GRCh38.96.chr.gtf.gz", 2),
+                rep("ftp://ftp.ensembl.org/pub/release-96/gtf/mus_musculus/Mus_musculus.GRCm38.96.chr.gtf.gz", 2)),
+  SourceVersion = rep("Sep 10 2019", 9),
+  Species = c(rep("Homo sapiens", 7), rep("Mus musculus", 2)),
+  TaxonomyId = c(rep(9606, 7), rep(10090, 2)),
+  Coordinate_1_based = TRUE,
+  DataProvider = c("SickKids, Springer", "Springer", "Bioconductor", rep("Ensembl", 6)),
+  Maintainer = "Tim Peters <t.peters@garvan.org.au>",
+  RDataClass = c("character", "data.frame", "character", rep(c("GRanges", "GeneRegionTrack"), times=3)),
+  DispatchClass = c(rep("Rda",9)),
+  Location_Prefix = c(rep(".", 9)),
+  RDataPath = rep("dmrcatedata.Rda", 9),
+  Tags = "",
+  Notes = ""
+)
+
+write.csv(meta, file="inst/extdata/metadata.csv", row.names=FALSE)
