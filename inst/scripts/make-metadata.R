@@ -51,5 +51,4 @@ meta <- data.frame(
   Tags = "",
   Notes = ""
 )
-
 write.csv(meta, file="inst/extdata/metadata.csv", row.names=FALSE)
