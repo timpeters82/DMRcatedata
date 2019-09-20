@@ -5,6 +5,6 @@
 \description{
   This is a character vector of Illumina probes whose target CpG site is on a sex chromosome.
 }
-\usage{data(dmrcatedata)}
+\usage{data(XY.probes)}
 \format{character}
 \keyword{datasets}

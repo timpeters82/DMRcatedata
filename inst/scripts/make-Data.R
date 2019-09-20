@@ -158,5 +158,12 @@ mm10.generanges <- sapply(unique(symbol(mm10.grt)), function (x) {these.ranges <
                                                                           strand=strand(these.ranges)[1], symbol=x)})
 mm10.generanges <- unlist(GRangesList(mm10.generanges))
 
-save(crosshyb, snpsall, XY.probes, hg19.generanges, hg19.grt, hg38.generanges, hg38.grt, mm10.generanges, mm10.grt,
-     file="dmrcatedata.Rda")
+save(hg19.generanges, file="hg19.generanges.Rda")
+save(hg38.generanges, file="hg38.generanges.Rda")
+save(mm10.generanges, file="mm10.generanges.Rda")
+save(mm10.grt, file="mm10.grt.Rda")
+save(hg19.grt, file="hg19.grt.Rda")
+save(hg38.grt, file="hg38.grt.Rda")
+save(snpsall, file="snpsall.Rda")
+save(crosshyb, file="crosshyb.Rda")
+save(XY.probes, file="XY.probes.Rda")

@@ -5,7 +5,7 @@
 \description{
   This is a data.frame of Illumina probes whose target CpG lies on or near a known SNP. SNP ID, distance and minor allele frequency are all reported here.
 }
-\usage{data(dmrcatedata)}
+\usage{data(snpsall)}
 \format{data.frame}
 \source{
   \url{https://static-content.springer.com/esm/art\%3A10.1186\%2Fs13059-016-1066-1/MediaObjects/13059_2016_1066_MOESM4_ESM.csv}

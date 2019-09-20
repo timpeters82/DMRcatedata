@@ -5,7 +5,7 @@
 \description{
   This data set gives the genomic intervals of all gene regions in the Ensembl Release 75 of hg19.
 }
-\usage{data(dmrcatedata)}
+\usage{data(hg19.generanges)}
 \format{A GRanges object with 55773 intervals.}
 \source{\url{ftp://ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/Homo_sapiens.GRCh37.75.gtf.gz}}
 \keyword{datasets}

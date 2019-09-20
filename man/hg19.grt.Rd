@@ -5,6 +5,6 @@
 \description{
   This is a GeneRegionTrack formulated from TxDb.Hsapiens.UCSC.hg19.knownGene.
 }
-\usage{data(dmrcatedata)}
+\usage{data(hg19.grt)}
 \format{GeneRegionTrack}
 \keyword{datasets}

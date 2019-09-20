@@ -15,7 +15,9 @@ Maintainer: Tim Peters<t.peters@garvan.org.au>
 }
 
 \examples{
-data(dmrcatedata)
-}
+data(crosshyb)
+data(snpsall)
+data(hg19.grt)
+data(hg19.generanges)}
 
 \keyword{datasets}

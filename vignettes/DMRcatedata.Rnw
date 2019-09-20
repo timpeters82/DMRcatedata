@@ -15,10 +15,13 @@
 
 <<libr, message=FALSE, warning=FALSE>>=
 library(DMRcatedata)
-data(dmrcatedata)
+data(crosshyb)
+data(snpsall)
+data(hg19.grt)
+data(hg19.generanges)
 @
 
-Three objects are contained in \texttt{DMRcatedata}. 
+Nine objects are contained in \texttt{DMRcatedata}. 
 \texttt{crosshyb} is a factor listing probe IDs potentially confounded by cross-hybridisation to other parts of the genome\cite{Pidsley}\cite{Chen}. It is used internally by \texttt{rmSNPandCH()}.
 
 

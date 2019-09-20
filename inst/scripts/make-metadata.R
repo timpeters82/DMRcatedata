@@ -47,7 +47,8 @@ meta <- data.frame(
   RDataClass = c("character", "data.frame", "character", rep(c("GRanges", "GeneRegionTrack"), times=3)),
   DispatchClass = c(rep("Rda",9)),
   Location_Prefix = c(rep(".", 9)),
-  RDataPath = rep("dmrcatedata.Rda", 9),
+  RDataPath = c("crosshyb.Rda", "snpsall.Rda", "XY.probes.Rda", "hg19.generanges.Rda", "hg19.grt.Rda", 
+                "hg38.generanges.Rda", "hg38.grt.Rda", "mm10.generanges.Rda", "mm10.grt.Rda"),
   Tags = "",
   Notes = ""
 )
