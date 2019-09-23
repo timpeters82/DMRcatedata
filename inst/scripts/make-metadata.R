@@ -23,7 +23,7 @@ meta <- data.frame(
                   paste0("GRanges object giving the genomic intervals of all gene ",
                          "regions in the Ensembl Release 96 of mm10."),
                   "GeneRegionTrack formulated from TxDb.Mmusculus.UCSC.mm10.knownGene."),
-  BiocVersion = c(rep("2.14", 3), rep("3.9", 6)),
+  BiocVersion = rep("3.10", 9),
   Genome = c(rep("hg19", 5), rep("hg38", 2), rep("mm10", 2)),
   SourceType = c(rep("CSV", 3), rep("GTF", 6)), 
   SourceUrl = c(paste0("http://www.sickkids.ca/MS-Office-Files/Research/Weksberg%20Lab/48639-non-specific-probes-Illumina450k.xlsx, ",
@@ -38,7 +38,7 @@ meta <- data.frame(
                 rep("ftp://ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/Homo_sapiens.GRCh37.75.gtf.gz", 2),
                 rep("ftp://ftp.ensembl.org/pub/release-96/gtf/homo_sapiens/Homo_sapiens.GRCh38.96.chr.gtf.gz", 2),
                 rep("ftp://ftp.ensembl.org/pub/release-96/gtf/mus_musculus/Mus_musculus.GRCm38.96.chr.gtf.gz", 2)),
-  SourceVersion = rep("Sep 10 2019", 9),
+  SourceVersion = rep("Sep 23 2019", 9),
   Species = c(rep("Homo sapiens", 7), rep("Mus musculus", 2)),
   TaxonomyId = c(rep(9606, 7), rep(10090, 2)),
   Coordinate_1_based = TRUE,
@@ -47,9 +47,7 @@ meta <- data.frame(
   RDataClass = c("character", "data.frame", "character", rep(c("GRanges", "GeneRegionTrack"), times=3)),
   DispatchClass = c(rep("Rda",9)),
   Location_Prefix = c(rep(".", 9)),
-  RDataPath = c("crosshyb.Rda", "snpsall.Rda", "XY.probes.Rda", "hg19.generanges.Rda", "hg19.grt.Rda", 
-                "hg38.generanges.Rda", "hg38.grt.Rda", "mm10.generanges.Rda", "mm10.grt.Rda"),
-  Tags = "",
-  Notes = ""
+  RDataPath = paste("DMRcatedata", c("crosshyb.Rda", "snpsall.Rda", "XY.probes.Rda", "hg19.generanges.Rda", "hg19.grt.Rda", 
+                "hg38.generanges.Rda", "hg38.grt.Rda", "mm10.generanges.Rda", "mm10.grt.Rda"), sep="/")
 )
 write.csv(meta, file="inst/extdata/metadata.csv", row.names=FALSE)
