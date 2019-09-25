@@ -26,13 +26,8 @@ meta <- data.frame(
   BiocVersion = rep("3.10", 9),
   Genome = c(rep("hg19", 5), rep("hg38", 2), rep("mm10", 2)),
   SourceType = c(rep("CSV", 3), rep("GTF", 6)), 
-  SourceUrl = c(paste0("http://www.sickkids.ca/MS-Office-Files/Research/Weksberg%20Lab/48639-non-specific-probes-Illumina450k.xlsx, ",
-                       "https://static-content.springer.com/esm/art%3A10.1186%2Fs13059-016-1066-1/MediaObjects/13059_2016_1066_MOESM2_ESM.csv, ",
-                       "https://static-content.springer.com/esm/art%3A10.1186%2Fs13059-016-1066-1/MediaObjects/13059_2016_1066_MOESM3_ESM.csv"),
-                paste0("https://static-content.springer.com/esm/art%3A10.1186%2Fs13059-016-1066-1/MediaObjects/13059_2016_1066_MOESM4_ESM.csv, ",
-                       "https://static-content.springer.com/esm/art%3A10.1186%2Fs13059-016-1066-1/MediaObjects/13059_2016_1066_MOESM5_ESM.csv, ",
-                       "https://static-content.springer.com/esm/art%3A10.1186%2Fs13059-016-1066-1/MediaObjects/13059_2016_1066_MOESM6_ESM.csv, ",
-                       "http://www.sickkids.ca/MS-Office-Files/Research/Weksberg%20Lab/48640-polymorphic-CpGs-Illumina450k.xlsx"),
+  SourceUrl = c(paste0("https://tinyurl.com/y339e2lh, ", "https://tinyurl.com/yxm6c7g6, ", "https://tinyurl.com/y33fdy2w"),
+                paste0("https://tinyurl.com/yxfco4sz, ", "https://tinyurl.com/y6lwcm9v, ", "https://tinyurl.com/y5dykrzh, ", "https://tinyurl.com/y54dfss8"),
                 paste0("https://bitbucket.org/hansenlab/illuminahumanmethylationepicanno.ilm10b4.hg19/src/master/, ", 
                        "https://bitbucket.org/hansenlab/illuminahumanmethylation450kanno.ilmn12.hg19/src/master/"),
                 rep("ftp://ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/Homo_sapiens.GRCh37.75.gtf.gz", 2),
@@ -46,7 +41,6 @@ meta <- data.frame(
   Maintainer = "Tim Peters <t.peters@garvan.org.au>",
   RDataClass = c("character", "data.frame", "character", rep(c("GRanges", "GeneRegionTrack"), times=3)),
   DispatchClass = c(rep("Rda",9)),
-  Location_Prefix = c(rep(".", 9)),
   RDataPath = paste("DMRcatedata", c("crosshyb.Rda", "snpsall.Rda", "XY.probes.Rda", "hg19.generanges.Rda", "hg19.grt.Rda", 
                 "hg38.generanges.Rda", "hg38.grt.Rda", "mm10.generanges.Rda", "mm10.grt.Rda"), sep="/")
 )
