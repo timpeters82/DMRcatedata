@@ -118,8 +118,9 @@ gtf <- as.data.frame(rtracklayer::import("ftp://ftp.ensembl.org/pub/release-96/g
 m <- match(transcript(hg38.grt), gtf$transcript_id)
 symbol(hg38.grt) <- gtf$gene_name[m]
 hg38.generanges <- sapply(unique(symbol(hg38.grt)), function (x) {these.ranges <- ranges(hg38.grt)[ranges(hg38.grt)$symbol==x]
-                                                                  GRanges(seqnames(these.ranges)[1], IRanges(min(start(these.ranges)),
-                                                                                                             max(end(these.ranges))),
+                                                                  GRanges(unique(seqnames(these.ranges)), 
+                                                                          IRanges(sapply(unique(seqnames(these.ranges)), function (y) min(start(these.ranges[seqnames(these.ranges)==y]))), 
+                                                                                  sapply(unique(seqnames(these.ranges)), function (y) max(end(these.ranges[seqnames(these.ranges)==y])))),
                                                                           strand=strand(these.ranges)[1], symbol=x)})
 hg38.generanges <- unlist(GRangesList(hg38.generanges))
 
@@ -135,8 +136,9 @@ gtf <- as.data.frame(rtracklayer::import("ftp://ftp.ensembl.org/pub/release-75/g
 m <- match(transcript(hg19.grt), gtf$transcript_id)
 symbol(hg19.grt) <- gtf$gene_name[m]
 hg19.generanges <- sapply(unique(symbol(hg19.grt)), function (x) {these.ranges <- ranges(hg19.grt)[ranges(hg19.grt)$symbol==x]
-                                                                  GRanges(seqnames(these.ranges)[1], IRanges(min(start(these.ranges)),
-                                                                                                             max(end(these.ranges))),
+                                                                  GRanges(unique(seqnames(these.ranges)), 
+                                                                          IRanges(sapply(unique(seqnames(these.ranges)), function (y) min(start(these.ranges[seqnames(these.ranges)==y]))), 
+                                                                                  sapply(unique(seqnames(these.ranges)), function (y) max(end(these.ranges[seqnames(these.ranges)==y])))),
                                                                           strand=strand(these.ranges)[1], symbol=x)})
 hg19.generanges <- unlist(GRangesList(hg19.generanges))
 
@@ -153,8 +155,9 @@ gtf <- as.data.frame(rtracklayer::import("ftp://ftp.ensembl.org/pub/release-96/g
 m <- match(transcript(mm10.grt), gtf$transcript_id)
 symbol(mm10.grt) <- gtf$gene_name[m]
 mm10.generanges <- sapply(unique(symbol(mm10.grt)), function (x) {these.ranges <- ranges(mm10.grt)[ranges(mm10.grt)$symbol==x]
-                                                                  GRanges(seqnames(these.ranges)[1], IRanges(min(start(these.ranges)),
-                                                                                                             max(end(these.ranges))),
+                                                                  GRanges(unique(seqnames(these.ranges)), 
+                                                                          IRanges(sapply(unique(seqnames(these.ranges)), function (y) min(start(these.ranges[seqnames(these.ranges)==y]))), 
+                                                                                  sapply(unique(seqnames(these.ranges)), function (y) max(end(these.ranges[seqnames(these.ranges)==y])))),
                                                                           strand=strand(these.ranges)[1], symbol=x)})
 mm10.generanges <- unlist(GRangesList(mm10.generanges))
 
