@@ -107,21 +107,24 @@ XY.probes <- union(rownames(locs450k[locs450k$chr %in% c("chrX", "chrY"),]),
 
 #hg38
 
-hg38 <- makeTxDbFromEnsembl(organism="Homo sapiens", release=96)
+hg38 <- makeTxDbFromEnsembl(organism="Homo sapiens", release=102)
 hg38 <- keepSeqlevels(hg38, as.character(c(1:22, "X", "Y", "MT")))
 newStyle <- mapSeqlevels(seqlevels(hg38),"UCSC")
 hg38 <- renameSeqlevels(hg38, newStyle)
 hg38.grt <- GeneRegionTrack(hg38, genome="hg38", shape="box", fill = "lightblue", 
                             name = "Gene", showId = TRUE, geneSymbol = TRUE, 
                             transcriptAnnotation = "symbol", just.group="above")
-gtf <- as.data.frame(rtracklayer::import("ftp://ftp.ensembl.org/pub/release-96/gtf/homo_sapiens/Homo_sapiens.GRCh38.96.chr.gtf.gz"))
+gtf <- as.data.frame(rtracklayer::import("ftp://ftp.ensembl.org/pub/release-102/gtf/homo_sapiens/Homo_sapiens.GRCh38.102.chr.gtf.gz"))
 m <- match(transcript(hg38.grt), gtf$transcript_id)
 symbol(hg38.grt) <- gtf$gene_name[m]
-hg38.generanges <- sapply(unique(symbol(hg38.grt)), function (x) {these.ranges <- ranges(hg38.grt)[ranges(hg38.grt)$symbol==x]
-                                                                  GRanges(seqnames(these.ranges)[1], IRanges(min(start(these.ranges)),
-                                                                                                             max(end(these.ranges))),
-                                                                          strand=strand(these.ranges)[1], symbol=x)})
+hg38.generanges <- sapply(unique(gene(hg38.grt)), function (x) {these.ranges <- ranges(hg38.grt)[ranges(hg38.grt)$gene==x]
+                                                                  GRanges(unique(seqnames(these.ranges)), 
+                                                                          IRanges(sapply(unique(seqnames(these.ranges)), function (y) min(start(these.ranges[seqnames(these.ranges)==y]))), 
+                                                                                  sapply(unique(seqnames(these.ranges)), function (y) max(end(these.ranges[seqnames(these.ranges)==y])))),
+                                                                          strand=strand(these.ranges)[1], gene=x)})
 hg38.generanges <- unlist(GRangesList(hg38.generanges))
+m <- match(hg38.generanges$gene, gtf$gene_id)
+hg38.generanges$symbol <- gtf$gene_name[m]
 
 #hg19
 hg19 <- makeTxDbFromEnsembl(organism="Homo sapiens", release=75)
@@ -134,29 +137,35 @@ hg19.grt <- GeneRegionTrack(hg19, genome="hg19", shape="box", fill = "lightblue"
 gtf <- as.data.frame(rtracklayer::import("ftp://ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/Homo_sapiens.GRCh37.75.gtf.gz"))
 m <- match(transcript(hg19.grt), gtf$transcript_id)
 symbol(hg19.grt) <- gtf$gene_name[m]
-hg19.generanges <- sapply(unique(symbol(hg19.grt)), function (x) {these.ranges <- ranges(hg19.grt)[ranges(hg19.grt)$symbol==x]
-                                                                  GRanges(seqnames(these.ranges)[1], IRanges(min(start(these.ranges)),
-                                                                                                             max(end(these.ranges))),
-                                                                          strand=strand(these.ranges)[1], symbol=x)})
+hg19.generanges <- sapply(unique(gene(hg19.grt)), function (x) {these.ranges <- ranges(hg19.grt)[ranges(hg19.grt)$gene==x]
+                                                                  GRanges(unique(seqnames(these.ranges)), 
+                                                                          IRanges(sapply(unique(seqnames(these.ranges)), function (y) min(start(these.ranges[seqnames(these.ranges)==y]))), 
+                                                                                  sapply(unique(seqnames(these.ranges)), function (y) max(end(these.ranges[seqnames(these.ranges)==y])))),
+                                                                          strand=strand(these.ranges)[1], gene=x)})
 hg19.generanges <- unlist(GRangesList(hg19.generanges))
+m <- match(hg19.generanges$gene, gtf$gene_id)
+hg19.generanges$symbol <- gtf$gene_name[m]
 
 
 #mm10
-mm10 <- makeTxDbFromEnsembl(organism="Mus musculus", release=96)
+mm10 <- makeTxDbFromEnsembl(organism="Mus musculus", release=102)
 mm10 <- keepSeqlevels(mm10, as.character(c(1:19, "X", "Y", "MT")))
 newStyle <- mapSeqlevels(seqlevels(mm10),"UCSC")
 mm10 <- renameSeqlevels(mm10, newStyle)
 mm10.grt <- GeneRegionTrack(mm10, genome="mm10", shape="box", fill = "lightblue", 
                             name = "Gene", showId = TRUE, geneSymbol = TRUE, 
                             transcriptAnnotation = "symbol", just.group="above")
-gtf <- as.data.frame(rtracklayer::import("ftp://ftp.ensembl.org/pub/release-96/gtf/mus_musculus/Mus_musculus.GRCm38.96.chr.gtf.gz"))
+gtf <- as.data.frame(rtracklayer::import("ftp://ftp.ensembl.org/pub/release-102/gtf/mus_musculus/Mus_musculus.GRCm38.102.chr.gtf.gz"))
 m <- match(transcript(mm10.grt), gtf$transcript_id)
 symbol(mm10.grt) <- gtf$gene_name[m]
-mm10.generanges <- sapply(unique(symbol(mm10.grt)), function (x) {these.ranges <- ranges(mm10.grt)[ranges(mm10.grt)$symbol==x]
-                                                                  GRanges(seqnames(these.ranges)[1], IRanges(min(start(these.ranges)),
-                                                                                                             max(end(these.ranges))),
-                                                                          strand=strand(these.ranges)[1], symbol=x)})
+mm10.generanges <- sapply(unique(gene(mm10.grt)), function (x) {these.ranges <- ranges(mm10.grt)[ranges(mm10.grt)$gene==x]
+                                                                  GRanges(unique(seqnames(these.ranges)), 
+                                                                          IRanges(sapply(unique(seqnames(these.ranges)), function (y) min(start(these.ranges[seqnames(these.ranges)==y]))), 
+                                                                                  sapply(unique(seqnames(these.ranges)), function (y) max(end(these.ranges[seqnames(these.ranges)==y])))),
+                                                                          strand=strand(these.ranges)[1], gene=x)})
 mm10.generanges <- unlist(GRangesList(mm10.generanges))
+m <- match(mm10.generanges$gene, gtf$gene_id)
+mm10.generanges$symbol <- gtf$gene_name[m]
 
 save(hg19.generanges, file="hg19.generanges.Rda")
 save(hg38.generanges, file="hg38.generanges.Rda")
