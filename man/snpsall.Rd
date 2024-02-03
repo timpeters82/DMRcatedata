@@ -1,9 +1,9 @@
 \name{snpsall}
 \docType{data}
 \alias{snpsall}
-\title{SNP information for Illumina probes}
+\title{SNP information for EPICv1 and 450K Illumina probes}
 \description{
-  This is a data.frame of Illumina probes whose target CpG lies on or near a known SNP. SNP ID, distance and minor allele frequency are all reported here.
+  This is a data.frame of Illumina probes from EPICv1 and 450K whose target CpG lies on or near a known SNP. SNP ID, distance and minor allele frequency are all reported here.
 }
 \usage{data(snpsall)}
 \format{data.frame}

@@ -16,18 +16,25 @@
 <<libr, message=FALSE, warning=FALSE>>=
 library(DMRcatedata)
 data(crosshyb)
+
+#Proximal SNPs to EPICv1 and 450K
 data(snpsall)
+
+#Proximal SNPs to EPICv2
+data(epicv2snps)
+
 data(hg19.grt)
 data(hg19.generanges)
 @
 
-Nine objects are contained in \texttt{DMRcatedata}. 
-\texttt{crosshyb} is a factor listing probe IDs potentially confounded by cross-hybridisation to other parts of the genome\cite{Pidsley}\cite{Chen}. It is used internally by \texttt{rmSNPandCH()}.
+Ten objects are contained in \texttt{DMRcatedata}. 
+\texttt{crosshyb} is a factor listing EPICv1 and 450K probe IDs potentially confounded by cross-hybridisation to other parts of the genome\cite{Pidsley}\cite{Chen}. It is used internally by \texttt{rmSNPandCH()}.
 
 
-\texttt{snpsall} is a data.frame containing probes that are potentially confounded by a SNP or indel variant\cite{Pidsley}. It lists the ID, distance (in nucleotides) to the CpG in question, and minor allele frequency for each associated variant.
+\texttt{snpsall} is a data.frame containing probes from 450K and EPICv1 that are potentially confounded by a SNP or indel variant\cite{Pidsley}. It lists the ID, distance (in nucleotides) to the CpG in question, and minor allele frequency for each associated variant. \texttt{epicv2snps} contains the same but for the EPICv2 array.
 
-\texttt{XY.probes} is a vector of Illumina probes whose targets are on human sex chromosomes.
+
+\texttt{XY.probes} is a vector of EPICv1 and 450K Illumina probes whose targets are on human sex chromosomes.
 
 
 Objects named \texttt{.*\.(grt|generanges)} are annotation objects that are needed by \texttt{extractRanges()} and \texttt{DMR.plot()} respectively. hg38 and mm10 objects have been parsed from Release 96 of Ensembl, and hg19 from Release 75. These are accessed within the environment of the aforementioned functions.

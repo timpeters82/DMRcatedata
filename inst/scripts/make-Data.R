@@ -167,6 +167,25 @@ mm10.generanges <- unlist(GRangesList(mm10.generanges))
 m <- match(mm10.generanges$gene, gtf$gene_id)
 mm10.generanges$symbol <- gtf$gene_name[m]
 
+###EPICv2 SNPs from manifest
+#Additional File 4 from Peters et al. 2024
+EPICv2manifest <- read.csv("~/analysis_tmp/EPICv2/AdditionalFile4.csv")
+rownames(EPICv2manifest) <- EPICv2manifest$Probe_ID
+
+
+getallprobeinf <- function(probe){
+  probeentries <- EPICv2manifest[probe,]
+  df <- data.frame(snps=unlist(strsplit(probeentries$SNP_ID, ";")),
+                   distances=as.numeric(unlist(strsplit(probeentries$SNP_DISTANCE, ";"))),
+                   mafs=as.numeric(unlist(strsplit(probeentries$SNP_MinorAlleleFrequency, ";"))))
+  df$probe <- rep(probe, nrow(df))
+  df <- df[,c(2:4, 1)]
+  df
+}
+probeinf <- lapply(rownames(EPICv2manifest)[nchar(EPICv2manifest$SNP_ID) > 0], getallprobeinf)
+epicv2snps <- rbind.fill(probeinf)
+
+
 save(hg19.generanges, file="hg19.generanges.Rda")
 save(hg38.generanges, file="hg38.generanges.Rda")
 save(mm10.generanges, file="mm10.generanges.Rda")
@@ -176,3 +195,4 @@ save(hg38.grt, file="hg38.grt.Rda")
 save(snpsall, file="snpsall.Rda")
 save(crosshyb, file="crosshyb.Rda")
 save(XY.probes, file="XY.probes.Rda")
+save(epicv2snps, file="epicv2snps.Rda")
