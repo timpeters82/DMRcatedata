@@ -185,6 +185,29 @@ getallprobeinf <- function(probe){
 probeinf <- lapply(rownames(EPICv2manifest)[nchar(EPICv2manifest$SNP_ID) > 0], getallprobeinf)
 epicv2snps <- rbind.fill(probeinf)
 
+#EPICv2 data from Noguera-Castells et al. (2023)
+
+system("wget https://ftp.ncbi.nlm.nih.gov/geo/series/GSE222nnn/GSE222919/suppl/GSE222919%5Fprocessed%5Fdata.txt.gz")
+esteller <- read.table(gzfile("GSE222919_processed_data.txt.gz"), sep = "\t", row.names = 1, header = T)
+ALLbetas <- esteller[3:nrow(esteller), grep("BALL_0|TALL_0", esteller[2,])]
+detPs <- esteller[3:nrow(esteller), grep("BALL_0|TALL_0", esteller[2,]) + 1]
+colnames(ALLbetas) <- colnames(detPs) <- esteller[2, grep("BALL_0|TALL_0", esteller[2,])]
+ALLbetas <- apply(ALLbetas, 2, as.numeric)
+detPs <- apply(detPs, 2, as.numeric)
+rownames(ALLbetas) <- rownames(detPs) <- rownames(esteller)[3:nrow(esteller)]
+
+#Remove detPs > 0.05
+rm <- apply(detPs, 1, function (x) any(x > 0.05))
+table(rm)
+# FALSE   TRUE 
+#894902    926 
+
+ALLbetas <- ALLbetas[!rm,]
+ALLbetas <- data.matrix(ALLbetas)
+
+#Offset
+ALLbetas[ALLbetas==0] <- 0.001
+ALLbetas[ALLbetas==1] <- 0.999
 
 save(hg19.generanges, file="hg19.generanges.Rda")
 save(hg38.generanges, file="hg38.generanges.Rda")
@@ -196,3 +219,4 @@ save(snpsall, file="snpsall.Rda")
 save(crosshyb, file="crosshyb.Rda")
 save(XY.probes, file="XY.probes.Rda")
 save(epicv2snps, file="epicv2snps.Rda")
+save(ALLbetas, file="ALLbetas.Rda")
