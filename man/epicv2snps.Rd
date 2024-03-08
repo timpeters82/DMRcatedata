@@ -8,6 +8,6 @@
 \usage{data(snpsall)}
 \format{data.frame}
 \source{
-  \url{https://bioconductor.org/packages/release/data/experiment/html/DMRcatedata.html}
+  \url{https://static-content.springer.com/esm/art\%3A10.1186\%2Fs12864-024-10027-5/MediaObjects/12864_2024_10027_MOESM4_ESM.csv}
 }
 \keyword{datasets}
